@@ -4,7 +4,8 @@
 
 > **Автор идеи, кода и всей графики:** Лика  
 > **Жанр:** Foraging game / Ботаническая головоломка / Пиксельное приключение  
-> **Стек:** Pure HTML5, CSS3, Vanilla JavaScript (без сторонних зависимостей, оффлайн)
+> **Стек:** Pure HTML5, CSS3, Vanilla JavaScript (без сторонних зависимостей, оффлайн)  
+> 🍄 **Играть онлайн:** [bulachak.github.io/lesnaya-brodilka](https://bulachak.github.io/lesnaya-brodilka/)
 
 ---
 
