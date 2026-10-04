@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Лесная бродилка</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Стартовый экран с правилами -->
+  <div id="startOverlay">
+    <div id="startBox">
+      <h1>🌲 Лесная бродилка 🌲</h1>
+      <p class="rules">
+        Ты — грибник. На поле спрятаны <b>10 станций</b>.<br>
+        На каждой — <b>два гриба или растения</b>.<br>
+        Один съедобный, другой — <b>ядовитый</b>.<br><br>
+        Кликай по <b>светящимся кружкам</b> по очереди,<br>
+        выбирай <b>только съедобное</b> и собирай в корзинку.<br><br>
+        Когда пройдёшь все 10 — вернись в <b>лагерь</b><br>
+        и свари из добычи ужин.<br><br>
+        <i>Собери всё правильно — иначе...</i>
+      </p>
+      <button id="startBtn">НАЧАТЬ</button>
+    </div>
+  </div>
+
+  <!-- Игровое поле (масштабируется) -->
+  <div id="viewport">
+    <div id="world">
+      <div id="field"></div>
+      <div id="character"></div>
+
+      <!-- Станции вставляются сюда из JS -->
+      <div id="stationsLayer"></div>
+
+      <!-- Лагерь -->
+      <div id="camp"></div>
+    </div>
+  </div>
+
+  <!-- Окно выбора (поверх всего, по центру экрана) -->
+  <div id="choiceOverlay" class="hidden">
+    <div id="choiceBox">
+      <h2 id="choiceTitle">Что возьмёшь?</h2>
+      <div id="choiceOptions">
+        <div class="option" data-index="0">
+          <div class="option-img"></div>
+          <div class="option-name"></div>
+        </div>
+        <div class="option" data-index="1">
+          <div class="option-img"></div>
+          <div class="option-name"></div>
+        </div>
+      </div>
+      <button id="collectBtn" disabled>СОБРАТЬ</button>
+    </div>
+  </div>
+
+  <!-- Кнопка "Приготовить явства" в лагере -->
+  <div id="cookOverlay" class="hidden">
+    <button id="cookBtn">🔥 Приготовить явства</button>
+  </div>
+
+  <!-- Экран итогов -->
+  <div id="endOverlay" class="hidden">
+    <div id="endBox">
+      <div id="endText"></div>
+      <button id="restartBtn">Продолжить игру</button>
+    </div>
+  </div>
+
+  <script src="images.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

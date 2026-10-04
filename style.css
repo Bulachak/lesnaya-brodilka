@@ -1,0 +1,358 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #111;
+  font-family: "Georgia", serif;
+  user-select: none;
+}
+
+/* ---------- ИГРОВОЕ ПОЛЕ ---------- */
+#viewport {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3072px;
+  height: 2048px;
+  transform-origin: center center;
+  /* масштаб ставится через JS */
+}
+
+#world {
+  position: relative;
+  width: 3072px;
+  height: 2048px;
+}
+
+#field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #2f4a2a center/cover no-repeat;
+}
+
+/* ---------- ПЕРСОНАЖ ---------- */
+#character {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  transform: translate(-50%, -50%);
+  background-image: url();
+  background-color: transparent;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ---------- СТАНЦИИ ---------- */
+.station {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.35);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 4;
+  animation: pulseGold 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGold {
+  0%, 100% {
+    box-shadow:
+      0 0 20px 8px rgba(255, 215, 0, 0.65),
+      0 0 45px 18px rgba(255, 215, 0, 0.30);
+  }
+  50% {
+    box-shadow:
+      0 0 40px 16px rgba(255, 215, 0, 0.95),
+      0 0 90px 36px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.station:active { transform: translate(-50%, -50%) scale(0.92); }
+
+/* ---------- ЛАГЕРЬ ---------- */
+#camp {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 4;
+  display: none;
+}
+
+#camp.active {
+  display: block;
+  background: rgba(255, 140, 0, 0.35);
+  animation: pulseOrange 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseOrange {
+  0%, 100% {
+    box-shadow:
+      0 0 20px 8px rgba(255, 140, 0, 0.65),
+      0 0 45px 18px rgba(255, 140, 0, 0.30);
+  }
+  50% {
+    box-shadow:
+      0 0 40px 16px rgba(255, 140, 0, 0.95),
+      0 0 90px 36px rgba(255, 140, 0, 0.5);
+  }
+}
+
+/* ---------- ОКНО ВЫБОРА ---------- */
+#choiceOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(3px);
+}
+
+#choiceBox {
+  background: rgba(30, 24, 16, 0.95);
+  border: 3px solid #d4a55a;
+  border-radius: 20px;
+  padding: 30px 40px 25px;
+  box-shadow: 0 0 60px rgba(255, 215, 0, 0.35);
+  text-align: center;
+  max-width: 95vw;
+}
+
+#choiceTitle {
+  color: #ffd700;
+  margin: 0 0 20px;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+#choiceOptions {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.option {
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.option.selected {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+}
+
+.option-img {
+  width: 300px;
+  height: 300px;
+  background: #4a3a2a center/contain no-repeat;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.option-name {
+  color: #e8d5b0;
+  font-style: italic;
+  font-size: 16px;
+}
+
+#collectBtn {
+  padding: 18px 60px;
+  font-size: 22px;
+  letter-spacing: 3px;
+  font-family: inherit;
+  font-weight: bold;
+  background: linear-gradient(180deg, #d4a55a, #8b6b2f);
+  border: 3px solid #ffd700;
+  border-radius: 12px;
+  color: #2a1a08;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#collectBtn:enabled:hover {
+  background: linear-gradient(180deg, #ffd700, #d4a55a);
+  transform: scale(1.05);
+}
+
+#collectBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.7);
+}
+
+/* ---------- КНОПКА В ЛАГЕРЕ ---------- */
+#cookOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  pointer-events: none;
+}
+
+#cookBtn {
+  pointer-events: auto;
+  padding: 25px 70px;
+  font-size: 30px;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 2px;
+  background: linear-gradient(180deg, #d4a55a, #6b4a1a);
+  border: 4px solid #ffd700;
+  border-radius: 18px;
+  color: #fff4d0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+  cursor: pointer;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6),
+              inset 0 0 20px rgba(255, 215, 0, 0.3);
+  animation: pulseBtn 2s ease-in-out infinite;
+}
+
+@keyframes pulseBtn {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+#cookBtn:hover {
+  background: linear-gradient(180deg, #ffd700, #d4a55a);
+  color: #2a1a08;
+}
+
+/* ---------- ЭКРАН ИТОГОВ ---------- */
+#endOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+#endBox {
+  background: rgba(30, 24, 16, 0.97);
+  border: 4px solid #d4a55a;
+  border-radius: 25px;
+  padding: 60px 80px;
+  text-align: center;
+  max-width: 90vw;
+  box-shadow: 0 0 80px rgba(255, 215, 0, 0.4);
+}
+
+#endText {
+  font-size: 38px;
+  color: #ffd700;
+  margin-bottom: 40px;
+  line-height: 1.4;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+#restartBtn {
+  padding: 20px 70px;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 2px;
+  background: linear-gradient(180deg, #d4a55a, #8b6b2f);
+  border: 3px solid #ffd700;
+  border-radius: 12px;
+  color: #2a1a08;
+  cursor: pointer;
+}
+
+#restartBtn:hover {
+  background: linear-gradient(180deg, #ffd700, #d4a55a);
+  transform: scale(1.05);
+}
+
+/* ---------- СТАРТОВЫЙ ЭКРАН ---------- */
+#startOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #2f4a2a 0%, #0d1a0d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.6s ease;
+}
+
+#startBox {
+  background: rgba(30, 24, 16, 0.95);
+  border: 4px solid #d4a55a;
+  border-radius: 25px;
+  padding: 50px 70px;
+  text-align: center;
+  max-width: 700px;
+  box-shadow: 0 0 80px rgba(255, 215, 0, 0.4);
+}
+
+#startBox h1 {
+  color: #ffd700;
+  font-size: 42px;
+  margin: 0 0 30px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+#startBox .rules {
+  color: #e8d5b0;
+  font-size: 19px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+#startBox .rules b { color: #ffd700; }
+#startBox .rules i { color: #c99; }
+
+#startBtn {
+  padding: 20px 80px;
+  font-size: 26px;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 4px;
+  background: linear-gradient(180deg, #d4a55a, #8b6b2f);
+  border: 3px solid #ffd700;
+  border-radius: 12px;
+  color: #2a1a08;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#startBtn:hover {
+  background: linear-gradient(180deg, #ffd700, #d4a55a);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
+
+/* плавное затухание стартового экрана */
+#startOverlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- УТИЛИТА ---------- */
+.hidden { display: none !important; }
