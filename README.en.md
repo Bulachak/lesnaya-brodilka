@@ -1,6 +1,6 @@
 # 🌲 Forest Wanderer (Lesnaya Brodilka)
 
-**[🇬🇧 English]** &nbsp;|&nbsp; **[🇷🇺 Русский](README.md)**
+[Русский](README.md) &nbsp;•&nbsp; **English**
 
 A cozy 2D pixel art foraging web game about gathering edible mushrooms and forest herbs.
 
